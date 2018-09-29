@@ -77,12 +77,19 @@ void handler(int const signo, siginfo_t*, void*)
 
 void setup_handler()
 {
+	static char stack[SIGSTKSZ];
+	stack_t ss = {
+			.ss_size = SIGSTKSZ,
+			.ss_sp = stack,
+	};
 	struct sigaction sa;
 	sa.sa_sigaction = &sig::detail::handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;
+	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+	sigaltstack(&ss, 0);
 	sigaction(SIGSEGV, &sa, nullptr);
 	sigaction(SIGBUS, &sa, nullptr);
+	sigaction(SIGFPE, &sa, nullptr);
 }
 
 } // detail namespace

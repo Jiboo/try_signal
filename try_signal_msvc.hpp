@@ -42,12 +42,12 @@ bool catch_error(int const code);
 
 } // detail namespace
 
-template <typename Fun>
-void try_signal(Fun&& f)
+template<class TFunctor, class... TParams>
+decltype(auto) try_signal(TFunctor pFunctor, TParams...pParams)
 {
 	__try
 	{
-		f();
+		return std::invoke(pFunctor, pParams...);
 	}
 	__except (detail::catch_error(GetExceptionCode()))
 	{

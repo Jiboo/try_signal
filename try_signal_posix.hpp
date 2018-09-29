@@ -36,6 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "signal_error_code.hpp"
 #include <setjmp.h> // for sigjmp_buf
 #include <atomic>
+#include <functional>
 
 namespace sig {
 
@@ -58,8 +59,8 @@ void setup_handler();
 
 } // detail namespace
 
-template <typename Fun>
-void try_signal(Fun&& f)
+template<class TFunctor, class... TParams>
+decltype(auto) try_signal(TFunctor pFunctor, TParams...pParams)
 {
 	if (sig::detail::once.test_and_set() == false) {
 		sig::detail::setup_handler();
@@ -73,10 +74,9 @@ void try_signal(Fun&& f)
 	if (sig != 0)
 		throw std::system_error(static_cast<sig::errors::error_code_enum>(sig));
 
-	f();
+	return std::invoke(pFunctor, pParams...);
 }
 
 }
 
 #endif
-

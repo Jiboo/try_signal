@@ -58,8 +58,9 @@ private:
 
 } // detail namespace
 
-template <typename Fun>
-void try_signal(Fun&& f)
+
+template<class TFunctor, class... TParams>
+decltype(auto) try_signal(TFunctor pFunctor, TParams...pParams)
 {
 	jmp_buf buf;
 	int const code = setjmp(buf);
@@ -69,7 +70,7 @@ void try_signal(Fun&& f)
 	if (code != 0)
 		throw std::system_error(std::error_code(code, seh_category()));
 
-	f();
+	return std::invoke(pFunctor, pParams...);
 }
 
 } // sig namespace
