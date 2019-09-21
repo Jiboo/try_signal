@@ -79,8 +79,8 @@ void setup_handler()
 {
 	static char stack[SIGSTKSZ];
 	stack_t ss = {
+      .ss_sp = stack,
 			.ss_size = SIGSTKSZ,
-			.ss_sp = stack,
 	};
 	struct sigaction sa;
 	sa.sa_sigaction = &sig::detail::handler;
