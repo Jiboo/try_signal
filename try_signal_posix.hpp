@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TRY_SIGNAL_POSIX_HPP_INCLUDED
 
 #include "signal_error_code.hpp"
-#include <setjmp.h> // for sigjmp_buf
+#include <csetjmp> // for sigjmp_buf
 #include <atomic>
 #include <functional>
 

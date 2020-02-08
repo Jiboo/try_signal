@@ -35,6 +35,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "signal_error_code.hpp"
 
+#include <functional>
+
 namespace sig {
 namespace detail {
 

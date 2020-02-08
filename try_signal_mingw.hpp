@@ -35,6 +35,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "signal_error_code.hpp"
 
+#include <functional>
+
 #include <setjmp.h> // for jmp_buf
 
 #ifndef WIN32_LEAN_AND_MEAN
